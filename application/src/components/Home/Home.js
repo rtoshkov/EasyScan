@@ -4,22 +4,20 @@ import {useEffect} from "react";
 
 const Home = () => {
     useEffect(() => {
+        return () => {
         function onScanSuccess(decodedText, decodedResult) {
             console.log(`Code scanned = ${decodedText}`, decodedResult);
         }
+
         let html5QrcodeScanner = new Html5QrcodeScanner(
-            "qr-reader", { fps: 10, qrbox: 400}, false);
+            "qr-reader", {fps: 20, qrbox: 400}, false);
         html5QrcodeScanner.render(onScanSuccess);
-        return () => {
-            console.log('CleanYOPOOOO')
-            html5QrcodeScanner.clear().catch(error => {
-                console.error("Failed to clear html5QrcodeScanner. ", error);
-            });
-        }
-    },[])
+    }}, [])
 
     return (
+
         <div id="qr-reader"></div>
+
     )
 }
 
