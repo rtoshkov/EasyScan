@@ -2,22 +2,28 @@ import {Html5QrcodeScanner} from "html5-qrcode"
 import styles from './Home.module.css';
 import {useEffect} from "react";
 
-const Home = () => {
+const Home = (props) => {
+
     useEffect(() => {
         return () => {
-        function onScanSuccess(decodedText, decodedResult) {
-            console.log(`Code scanned = ${decodedText}`, decodedResult);
-        }
+            let tempResults = [];
 
-        let html5QrcodeScanner = new Html5QrcodeScanner(
-            "qr-reader", {fps: 20, qrbox: 400}, false);
-        html5QrcodeScanner.render(onScanSuccess);
-    }}, [])
+            function onScanSuccess(decodedText, decodedResult) {
+                console.log(`Code scanned = ${decodedText}`, decodedResult);
+                if (!tempResults.includes(decodedText)) {
+                    props.setResult(serial => serial.concat(decodedText));
+                    tempResults.push(decodedText);
+                }
+            }
+
+            let html5QrcodeScanner = new Html5QrcodeScanner(
+                "qr-reader", {fps: 10, qrbox: 250}, false);
+            html5QrcodeScanner.render(onScanSuccess);
+        }
+    }, [])
 
     return (
-
         <div id="qr-reader"></div>
-
     )
 }
 
