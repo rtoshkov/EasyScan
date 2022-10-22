@@ -1,7 +1,7 @@
 const dotenv = require('dotenv');
 dotenv.config();
 
-const KEY = require('./google.json');
+const KEY = require(process.env.GOOGLE_CREDENTIALS);
 
 module.exports = {
     DATABASE_ADDRESS: process.env.DATABASE_ADDRESS,
