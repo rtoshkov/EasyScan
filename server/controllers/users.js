@@ -35,5 +35,15 @@ router.get('/verifyToken', isUser(), async (req, res) => {
     }
 })
 
+router.get('/logout', isUser(), async (req, res) => {
+    try {
+        await api.logout(req.user.accessToken);
+        res.status(200).json({message: 'Logout Successful'})
+    } catch (err) {
+        //TODO Streamline Errors
+        res.status(400).json({message: 'Invalid username or password'})
+    }
+})
+
 
 module.exports = router;
