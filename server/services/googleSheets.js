@@ -14,6 +14,7 @@ async function getSheetInfo(sheetAddress, sheetName, sheetColumn, data, givenTo)
     await doc.loadInfo();
     const sheet = await doc.sheetsByTitle[sheetName];
     const column = CELL_POSITION[sheetName][sheetColumn];
+    //TODO fix the hardcoded 'givenTo'
     const givenToColumn = CELL_POSITION[sheetName]['givenTo']
     await sheet.loadCells(`${givenToColumn}2:${column}`);
     let cells = await sheet.getCellsInRange(`${column}2:${column}`) || [];

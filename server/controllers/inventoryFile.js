@@ -1,17 +1,10 @@
 const router = require('express').Router();
 const googleApi = require('../services/googleSheets');
+const requestValidator = require('../utils/requestValidator');
 
 router.post('/', async (req,res) => {
-    //TODO create request validator
     try{
-        const record = {
-            sheetAddress: req.body.sheetAddress,
-            sheetName: req.body.sheetName,
-            columnName: req.body.columnName,
-            data: req.body.data,
-            givenTo: req.body.givenTo,
-        }
-
+        const record = requestValidator(req);
         const result = await googleApi.getSheetInfo(
             record.sheetAddress,
             record.sheetName,
