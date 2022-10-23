@@ -28,13 +28,12 @@ app.use(cors());
 app.use(express.json())
 app.use(attachToken());
 
-app.use('/inventory-file', inventoryFileController);
-app.use('/user', userController);
+app.use('/apiEasyScan/inventory-file', inventoryFileController);
+app.use('/apiEasyScan/user', userController);
 
 
-app.get('/', async (req, res) => {
+app.get('/apiEasyScan', async (req, res) => {
     res.json({message: 'Under Construction'});
 })
 
 app.listen(PORT, () => console.log(`Rest Service running on port ${PORT}`));
-
