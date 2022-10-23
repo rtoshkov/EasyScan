@@ -1,0 +1,5 @@
+DATABASE_ADDRESS="mongodb+srv://username:PASSWORD@cluster0.463zs.mongodb.net/?retryWrites=true&w=majority"
+PORT=3030
+JWT_SECRET="SOME SECRET"
+TELUS_INVENTORY=1-path-to-EXCEL
+GOOGLE_CREDENTIALS="./path_to_JSON_file"
