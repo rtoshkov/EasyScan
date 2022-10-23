@@ -76,5 +76,5 @@ module.exports = {
     login,
     register,
     verifyToken,
-    logout
+    logout,
 }

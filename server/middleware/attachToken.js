@@ -5,7 +5,6 @@ module.exports = () => (req, res, next) =>{
         if(token){
             const userData = verifyToken(token);
             req.user = userData;
-            console.log(req.user);
         }
     } catch(err){
         console.log('Invalid token');
