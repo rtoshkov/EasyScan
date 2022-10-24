@@ -6,6 +6,7 @@ const {isUser} = require("../middleware/isUser");
 router.post('/', isUser(), async (req,res) => {
     try{
         const record = requestValidator(req);
+        console.log(record);
         const result = await googleApi.getSheetInfo(
             record.sheetAddress,
             record.sheetName,
