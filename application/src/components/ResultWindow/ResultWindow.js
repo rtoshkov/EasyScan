@@ -1,3 +1,5 @@
+import {Link} from "react-router-dom";
+
 const ResultWindow = (props) => {
     console.log()
     return (
@@ -6,6 +8,9 @@ const ResultWindow = (props) => {
             <ul>
                 {props.results.map((serial) => <li key={serial}>{serial}</li>)}
             </ul>
+            <Link to="/notion">Notion API</Link>
+            <br/>
+            <Link to="/inventory">Inventory File</Link>
         </div>
     )
 }
