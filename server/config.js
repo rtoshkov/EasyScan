@@ -13,4 +13,6 @@ module.exports = {
         PLOVDIV_INVENTORY: process.env.PLOVDIV_INVENTORY,
     },
     KEY,
+    NOTION_KEY: process.env.NOTION_KEY,
+    NOTION_DATABASE_ID: process.env.NOTION_DATABASE_ID,
 }

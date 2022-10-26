@@ -5,7 +5,6 @@ const googleApi = require("../services/googleSheets");
 
 async function recordAnalyzer(record) {
     if (record.save && record.columnName !== "serial") {
-        console.log("I was here");
         let [_, result] = await Promise.all([
             await googleApi.getSheetInfo(
                 record.sheetAddress,

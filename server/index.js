@@ -6,6 +6,7 @@ const attachToken = require('./middleware/attachToken.js')
 const {DATABASE_ADDRESS, PORT} = require('./config');
 
 const inventoryFileController = require('./controllers/inventoryFile');
+const notionDBController = require('./controllers/notionDB');
 const userController = require('./controllers/users');
 
 launch();
@@ -25,10 +26,11 @@ async function launch() {
 
 const app = express();
 app.use(cors());
-app.use(express.json())
+app.use(express.json());
 app.use(attachToken());
 
 app.use('/apiEasyScan/inventory-file', inventoryFileController);
+app.use('/apiEasyScan/notionDB', notionDBController);
 app.use('/apiEasyScan/user', userController);
 
 
