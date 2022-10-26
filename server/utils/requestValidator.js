@@ -28,6 +28,10 @@ function requestValidator(req){
         throw new Error(`givenTo is mandatory field. Use empty string if not needed`)
     }
 
+    if (req.body.save === undefined) {
+        req.body.save = false;
+    }
+
     // Convert to Set then back to Array
     let eliminateDuplicate = new Set(req.body.data);
 
@@ -37,6 +41,7 @@ function requestValidator(req){
         columnName: req.body.columnName.toLowerCase(),
         data: Array.from(eliminateDuplicate),
         givenTo: req.body.givenTo,
+        save: req.body.save,
     }
 }
 
