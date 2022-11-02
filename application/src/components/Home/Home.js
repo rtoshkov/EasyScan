@@ -8,6 +8,7 @@ const Home = (props) => {
         let tempResults = [];
 
         function onScanSuccess(decodedText, decodedResult) {
+            //TODO Remove console.log
             console.log(`Code scanned = ${decodedText}`, decodedResult);
             if (!tempResults.includes(decodedText)) {
                 props.setResult(serial => serial.concat(decodedText));
@@ -22,8 +23,8 @@ const Home = (props) => {
 
     return (
         <>
-            <div id="qr-reader"></div>
             <ResultWindow results={props.results}></ResultWindow>
+            <div id="qr-reader"></div>
         </>
     )
 }

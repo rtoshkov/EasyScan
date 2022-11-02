@@ -20,7 +20,7 @@ function requestValidator(req){
         throw new Error(`I don't have a record for the following column: ${req.body.columnName}`);
     }
 
-    if(!Array.isArray(req.body.data)){
+    if(!Array.isArray(req.body.data) || req.body.data.length < 1){
         throw new Error(`The data you send is incompatible. It has to be string array`)
     }
 
@@ -32,14 +32,14 @@ function requestValidator(req){
         req.body.save = false;
     }
 
-    // Convert to Set then back to Array
-    let eliminateDuplicate = new Set(req.body.data);
+    // We need array without duplicates
+    let eliminateDuplicate = [...new Set(req.body.data)];
 
     return {
         sheetAddress: req.body.sheetAddress,
         sheetName: req.body.sheetName,
         columnName: req.body.columnName.toLowerCase(),
-        data: Array.from(eliminateDuplicate),
+        data: eliminateDuplicate,
         givenTo: req.body.givenTo,
         save: req.body.save,
     }

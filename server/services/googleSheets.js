@@ -18,11 +18,13 @@ async function getSheetInfo(sheetAddress, sheetName, sheetColumn, data, givenTo)
     const givenToColumn = CELL_POSITION[sheetName]['givenTo']
     await sheet.loadCells(`${givenToColumn}2:${column}`);
     let cells = await sheet.getCellsInRange(`${column}2:${column}`) || [];
-
-    const allCellsString = cells.join(' ');
+    const allCellsString = cells.map((cell) => cell.join(''));
     let nextCell = cells.length + 2;
     data.forEach((serial) => {
-        if (serial && allCellsString.toLowerCase().includes(serial.toLowerCase())) {
+        const isAlreadyIncluded = allCellsString.findIndex(
+            (cell) => stringifyTrimAndLower(cell) === stringifyTrimAndLower(serial)
+        )
+        if (serial && !(isAlreadyIncluded === -1)) {
             info[serial] = `already in that column`;
         } else {
             sheet.getCellByA1(`${column}${nextCell}`).value = serial;
@@ -40,6 +42,9 @@ async function getSheetInfo(sheetAddress, sheetName, sheetColumn, data, givenTo)
     };
 }
 
+function stringifyTrimAndLower(word){
+    return word.toString().trim().toLowerCase()
+}
 
 module.exports = {
     getSheetInfo,
