@@ -6,14 +6,14 @@ const googleApi = require("../services/googleSheets");
 async function recordAnalyzer(record) {
     if (record.save && record.columnName !== "serial") {
         let [_, result] = await Promise.all([
-            await googleApi.getSheetInfo(
+            await googleApi.writeToFile(
                 record.sheetAddress,
                 record.sheetName,
                 "serial",
                 record.data,
                 record.givenTo,
             ),
-            await googleApi.getSheetInfo(
+            await googleApi.writeToFile(
                 record.sheetAddress,
                 record.sheetName,
                 record.columnName,
@@ -24,7 +24,7 @@ async function recordAnalyzer(record) {
         return result;
     }
 
-    return googleApi.getSheetInfo(
+    return googleApi.writeToFile(
         record.sheetAddress,
         record.sheetName,
         record.columnName,
