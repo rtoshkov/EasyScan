@@ -36,6 +36,7 @@ const CELLS_POZITION = {
         serial: 'A',
     },
     ERRORS: 'K16',
+    COLUMNS_W_SERIALS: ['returned', 'given', 'serial'],
 }
 
 

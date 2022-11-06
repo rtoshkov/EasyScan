@@ -3,7 +3,27 @@
 
 const googleApi = require("../services/googleSheets");
 
-async function recordAnalyzer(record) {
+async function recordAnalyzer(record, plusDelete = false) {
+
+    if(plusDelete) {
+        let [_, result] = await Promise.all([
+            await googleApi.deleteFromFile(
+                record.deleteFrom,
+                record.sheetName,
+                record.data,
+            ),
+            await googleApi.writeToFile(
+                record.sheetAddress,
+                record.sheetName,
+                record.columnName,
+                record.data,
+                record.givenTo,
+            )
+        ]);
+
+        return result;
+    }
+
     if (record.save && record.columnName !== "serial") {
         let [_, result] = await Promise.all([
             await googleApi.writeToFile(

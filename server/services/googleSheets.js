@@ -21,7 +21,7 @@ async function writeToFile(sheetAddress, sheetName, sheetColumn, data, givenTo) 
     let doc = await getFile(sheetAddress);
     const sheet = await doc.sheetsByTitle[sheetName];
     const column = CELL_POSITION[sheetName][sheetColumn];
-    const givenToColumn = CELL_POSITION[sheetName]['givenTo']
+    const givenToColumn = CELL_POSITION[sheetName]['givenTo'];
     await sheet.loadCells(`${givenToColumn}2:${column}`);
     let cells = await sheet.getCellsInRange(`${column}2:${column}`) || [];
     const allCellsString = cells.map((cell) => cell.join(''));
@@ -42,7 +42,6 @@ async function writeToFile(sheetAddress, sheetName, sheetColumn, data, givenTo) 
             nextCell++;
         }
     })
-
     await sheet.saveUpdatedCells();
     return {
         sheet,
@@ -50,11 +49,41 @@ async function writeToFile(sheetAddress, sheetName, sheetColumn, data, givenTo) 
     };
 }
 
-// async function deleteFromFile(sheetAddress, sheetName, data, destination){
-//     let doc = await getFile(sheetAddress);
-//
-// }
+async function deleteFromFile(sheetAddress, sheetName, data){
+    let doc = await getFile(sheetAddress);
+    const sheet = await doc.sheetsByTitle[sheetName];
+    let columns = CELL_POSITION.COLUMNS_W_SERIALS;
+
+    columns.forEach((columnName) => {
+        deleteFromColumn(columnName, sheet, sheetName, data);
+    })
+
+}
+
+
+async function deleteFromColumn(columnName, sheet, sheetName, data){
+    let matchIndexes = [];
+    const column = CELL_POSITION[sheetName][columnName];
+    const givenToColumn = CELL_POSITION[sheetName]['givenTo'];
+    await sheet.loadCells(`${givenToColumn}:${column}`);
+    let cells = await sheet.getCellsInRange(`${column}:${column}`) || [];
+    const allCellsString = cells.map((cell) => cell.join(''));
+
+    data.forEach((item) => {
+        const index = allCellsString.findIndex(
+            (cell) => stringifyTrimAndLower(cell) === stringifyTrimAndLower(item));
+        index !== -1 ? matchIndexes.push(index) : null
+    })
+
+    matchIndexes.forEach((index) => {
+        console.log(index)
+        sheet.getCellByA1(`${column}${index + 1}`).value = '';
+    })
+
+    await sheet.saveUpdatedCells();
+}
 
 module.exports = {
     writeToFile,
+    deleteFromFile,
 }

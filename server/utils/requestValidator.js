@@ -1,30 +1,30 @@
 const sheetMapper = require('./googleSheetMapper');
 const CELLS_POZITION = require('./cellPosition');
 
-function requestValidator(req){
+function requestValidator(req, plusDelete = false) {
     const sheet = sheetMapper(req.body.sheetAddress);
     const COLUMS = [
         'returned',
         'given',
         'serial',
     ]
-    if(sheet == null){
+    if (sheet == null) {
         throw new Error(`no such sheet file: ${req.body.sheetAddress}`);
     }
 
-    if(CELLS_POZITION[req.body.sheetName] === undefined){
+    if (CELLS_POZITION[req.body.sheetName] === undefined) {
         throw new Error(`i don't have a record for the following sheet: ${req.body.sheetName}`);
     }
 
-    if(!COLUMS.includes(req.body.columnName)){
+    if (!COLUMS.includes(req.body.columnName)) {
         throw new Error(`I don't have a record for the following column: ${req.body.columnName}`);
     }
 
-    if(!Array.isArray(req.body.data) || req.body.data.length < 1){
+    if (!Array.isArray(req.body.data) || req.body.data.length < 1) {
         throw new Error(`The data you send is incompatible. It has to be string array`)
     }
 
-    if(typeof req.body.givenTo !== 'string'){
+    if (typeof req.body.givenTo !== 'string') {
         throw new Error(`givenTo is mandatory field. Use empty string if not needed`)
     }
 
@@ -35,6 +35,13 @@ function requestValidator(req){
     // We need array without duplicates
     let eliminateDuplicate = [...new Set(req.body.data)];
 
+    if (plusDelete) {
+        const deleteSheet = sheetMapper(req.body.deleteFrom)
+        if (deleteSheet == null) {
+            throw new Error(`no such sheet file to delete from: ${req.body.deleteFrom}`);
+        }
+    }
+
     return {
         sheetAddress: req.body.sheetAddress,
         sheetName: req.body.sheetName,
@@ -42,6 +49,7 @@ function requestValidator(req){
         data: eliminateDuplicate,
         givenTo: req.body.givenTo,
         save: req.body.save,
+        deleteFrom: req.body.deleteFrom,
     }
 }
 
