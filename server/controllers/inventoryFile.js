@@ -28,7 +28,7 @@ router.post('/transfer', isUser(), async (req, res) => {
             const response = await recordAnalyzer(record, true);
 
             res.json({
-                'status': `the data has been sent to ${record.sheetAddress} inventory File + deleted from every column on ${record.deleteFrom}`,
+                'status': `the data has been sent to ${record.sheetAddress} inventory File + deleted from every column on ${record.deleteFrom} - ${record.sheetName}`,
                 'notSaved': response.info,
                 'sheet': record.sheetName,
             });

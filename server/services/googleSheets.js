@@ -54,16 +54,19 @@ async function deleteFromFile(sheetAddress, sheetName, data){
     const sheet = await doc.sheetsByTitle[sheetName];
     let columns = CELL_POSITION.COLUMNS_W_SERIALS;
 
-    columns.forEach((columnName) => {
-        deleteFromColumn(columnName, sheet, sheetName, data);
+    columns.forEach((sheetColumn) => {
+        deleteFromColumn(sheetColumn, sheet, sheetName, data);
     })
 
+    return {
+        sheet,
+    }
 }
 
 
-async function deleteFromColumn(columnName, sheet, sheetName, data){
+async function deleteFromColumn(sheetColumn, sheet, sheetName, data){
     let matchIndexes = [];
-    const column = CELL_POSITION[sheetName][columnName];
+    const column = CELL_POSITION[sheetName][sheetColumn];
     const givenToColumn = CELL_POSITION[sheetName]['givenTo'];
     await sheet.loadCells(`${givenToColumn}:${column}`);
     let cells = await sheet.getCellsInRange(`${column}:${column}`) || [];
@@ -76,8 +79,10 @@ async function deleteFromColumn(columnName, sheet, sheetName, data){
     })
 
     matchIndexes.forEach((index) => {
-        console.log(index)
         sheet.getCellByA1(`${column}${index + 1}`).value = '';
+        sheetColumn === 'given'
+            ? sheet.getCellByA1(`${givenToColumn}${index + 1}`).value = ''
+            : null;
     })
 
     await sheet.saveUpdatedCells();
