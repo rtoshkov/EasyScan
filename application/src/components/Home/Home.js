@@ -6,13 +6,15 @@ import ResultWindow from "../ResultWindow/ResultWindow";
 const Home = (props) => {
     useEffect(() => {
         let tempResults = [];
-
+        const audio = new Audio('/beep.wav');
         function onScanSuccess(decodedText, decodedResult) {
             //TODO Remove console.log
             console.log(`Code scanned = ${decodedText}`, decodedResult);
             if (!tempResults.includes(decodedText)) {
-                props.setResult(serial => serial.concat(decodedText));
                 tempResults.push(decodedText);
+                audio.play();
+                props.setResult(serial => serial.concat(decodedText));
+
             }
         }
 
